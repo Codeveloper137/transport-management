@@ -20,9 +20,10 @@ model accounts {
   scope             String?
   id_token          String?
   session_state     String?
-  users             users   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              user    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model audit_logs {
@@ -35,7 +36,7 @@ model audit_logs {
   ipAddress String?
   userAgent String?
   createdAt DateTime @default(now())
-  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([createdAt])
   @@index([userId])
@@ -53,7 +54,7 @@ model expenses {
   tripId      String?
   userId      String
   trips       trips?      @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  users       users       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        user        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([expenseDate])
   @@index([tripId])
@@ -83,7 +84,9 @@ model sessions {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model trips {
@@ -104,7 +107,7 @@ model trips {
   vehicleId        String
   userId           String
   expenses         expenses[]
-  users            users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             user       @relation(fields: [userId], references: [id], onDelete: Cascade)
   vehicles         vehicles   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 
   @@index([tripDate])
@@ -113,7 +116,7 @@ model trips {
   @@index([vehicleId])
 }
 
-model users {
+model user {
   id            String       @id
   email         String       @unique
   emailVerified DateTime?
@@ -128,6 +131,8 @@ model users {
   sessions      sessions[]
   trips         trips[]
   vehicles      vehicles[]
+
+  @@map("users")
 }
 
 model vehicles {
@@ -145,7 +150,7 @@ model vehicles {
   userId          String
   maintenances    maintenances[]
   trips           trips[]
-  users           users          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            user           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([licensePlate])
   @@index([userId])
@@ -157,6 +162,7 @@ model verification_tokens {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 enum ExpenseType {
