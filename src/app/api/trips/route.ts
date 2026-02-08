@@ -70,8 +70,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Registrar en auditoría
-    await prisma.auditLog.create({
+    // CORRECCIÓN: Usar audit_log para coincidir con el schema
+    await prisma.audit_log.create({
       data: {
         userId: session.user.id,
         action: "CREATE",
