@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    await prisma.auditLog.create({
+    await prisma.audit_log.create({
       data: {
         userId: session.user.id,
         action: "CREATE",
