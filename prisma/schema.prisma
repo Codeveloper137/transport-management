@@ -123,7 +123,7 @@ model trip {
 model user {
   id            String      @id @default(cuid())
   email         String      @unique
-  emailVerified DateTime?
+  emailVerified Boolean?    @default(false)
   name          String?
   image         String?
   role          UserRole    @default(ADMIN)
